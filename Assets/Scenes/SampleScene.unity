@@ -804,7 +804,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0dbad724462fd81378c2da9ebcf3745e,
         type: 3}
       propertyPath: m_Name
-      value: unityblue
+      value: Blue
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 0dbad724462fd81378c2da9ebcf3745e,
         type: 3}
