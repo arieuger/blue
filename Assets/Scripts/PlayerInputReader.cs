@@ -23,7 +23,7 @@ public class PlayerInputReader : MonoBehaviour
     {
         Vector2 vInput = input.Player.Movement.ReadValue<Vector2>();
         Vector3 direction = new Vector3(vInput.x, 0, 0);
-        player.Movement(direction);
+        player.UpdateMovement(direction);
     }
 
     private void JumpPerformed(InputAction.CallbackContext context)

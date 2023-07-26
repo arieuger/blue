@@ -4,48 +4,57 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    private Vector3 moveDirection;
+    private float horizontalMovement;
     private bool pressedJumpButton;
-    private CharacterController controller;
-    
+    private bool lookingRight = true;
+    private Rigidbody rb;
+    private Animator animator;
+
     [SerializeField] private float speed;
-    [SerializeField] private float gravity;
     [SerializeField] private float jumpHeight;
 
-    // Start is called before the first frame update
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        animator.SetFloat("horizontal_movement", Mathf.Abs(horizontalMovement));
     }
 
-    public void Movement(Vector3 direction) 
+    private void FixedUpdate() 
     {
-        // TODO: Revisar movemento con inputactions
-        
-        if (controller.isGrounded) 
-        {
-            moveDirection = direction;
-            moveDirection *= speed;
-            
-            if (pressedJumpButton)
-            {
-                moveDirection.y = jumpHeight;
-                pressedJumpButton = false;
-            }
-        }
+        rb.velocity = new Vector3(horizontalMovement * Time.fixedDeltaTime, rb.velocity.y, rb.velocity.z);
+        Move(horizontalMovement * Time.fixedDeltaTime);
+    }
 
-        moveDirection.y -= gravity * Time.deltaTime;
-        controller.Move(moveDirection * Time.deltaTime);
+    private void Move(float moving) {
+        rb.velocity = new Vector3(moving, rb.velocity.y, rb.velocity.z);
+        
+        if (pressedJumpButton) {
+            // Salto
+            pressedJumpButton = false;
+        }
+    }
+
+    public void UpdateMovement(Vector3 direction) 
+    {
+        horizontalMovement = direction.x * speed;
+        if (horizontalMovement > 0 && !lookingRight) Turn();
+        else if (horizontalMovement < 0 && lookingRight) Turn();
     }
 
     public void Jump() {
         pressedJumpButton = true;
+    }
+
+    private void Turn() {
+        lookingRight = !lookingRight;
+        Vector3 rot = transform.eulerAngles;
+        rot.y = Mathf.Abs(transform.eulerAngles.y) * -1f;
+        
+        transform.eulerAngles = rot;
     }
 }
