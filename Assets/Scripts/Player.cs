@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
 
     private Vector3 moveDirection;
     private bool pressedJumpButton;
+    private CharacterController controller;
     
-    [SerializeField] private CharacterController controller;
     [SerializeField] private float speed;
     [SerializeField] private float gravity;
     [SerializeField] private float jumpHeight;
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        controller = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
