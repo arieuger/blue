@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     private bool lookingRight = true;
     private Rigidbody rb;
     private Animator animator;
+    private bool isTurning = false;
+    private float rightY = 110f;
+    private float leftY = 245f;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpHeight;
@@ -51,10 +54,37 @@ public class Player : MonoBehaviour
     }
 
     private void Turn() {
-        lookingRight = !lookingRight;
-        Vector3 rot = transform.eulerAngles;
-        rot.y = Mathf.Abs(transform.eulerAngles.y) * -1f;
+        Debug.Log("Turning " + (lookingRight ? "Left" : "Right"));
+        // lookingRight = !lookingRight;
+        // Vector3 rot = transform.eulerAngles;
+        // rot.y = Mathf.Abs(transform.eulerAngles.y) * -1f;
         
-        transform.eulerAngles = rot;
+        // transform.eulerAngles = rot;
+
+        if (!isTurning) StartCoroutine(SmoothRotate());
+    }
+
+    private IEnumerator SmoothRotate() {
+        
+        // Vector3 from = transform.eulerAngles;
+        // Vector3 to = transform.eulerAngles;
+
+        float fromY = lookingRight ? rightY : leftY;
+        float toY = lookingRight ? leftY : rightY;
+
+        // to.y = Mathf.Abs(transform.eulerAngles.y) * -1f;
+        Debug.Log("TO: " + toY);
+        isTurning = true;
+        
+        while (toY - transform.eulerAngles.y >= 5f) {
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.Lerp(fromY, toY, Time.time), transform.eulerAngles.z);
+            Debug.Log(transform.eulerAngles.y);
+            // yield return new WaitForSecondsRealtime(30f);
+            // isTurning = false;
+        }
+
+        isTurning = false;
+        lookingRight = !lookingRight;
+        yield return new WaitForSecondsRealtime(1f);
     }
 }

@@ -827,7 +827,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 150
-  gravity: 9.8
   jumpHeight: 5
 --- !u!136 &543450652621068725
 CapsuleCollider:
